@@ -1,13 +1,11 @@
-const express               =  require('express'),
-      app                   =  express(),
-      mongoose              =  require("mongoose"),
-      passport              =  require("passport"),
-      bodyParser            =  require("body-parser"),
-      LocalStrategy         =  require("passport-local"),
-      passportLocalMongoose =  require("passport-local-mongoose"),
-      User                  =  require("./Models/user");
-
-
+const express               =  require('express');
+const app                   =  express();
+const mongoose              =  require("mongoose");
+const passport              =  require("passport");
+const bodyParser            =  require("body-parser");
+const LocalStrategy         =  require("passport-local");
+const passportLocalMongoose =  require("passport-local-mongoose");
+const User                  =  require("./Models/user");
 //Connecting database
 mongoose.connect("mongodb://127.0.0.1:27017/auth_demo",{ useNewUrlParser: true, useUnifiedTopology: true });
 app.use(require("express-session")({
@@ -53,16 +51,22 @@ app.get("/register",(req,res)=>{
 });
 
 app.post("/register",(req,res)=>{
-    
+ // console.log(req.body.password);
+ if(req.body.password.length >= 5){
     User.register(new User({username: req.body.username,phone:req.body.phone,telephone: req.body.telephone}),req.body.password,function(err,user){
+       
         if(err){
-            console.log(err);
+             console.log(err);
             res.render("register");
         }
     passport.authenticate("local")(req,res,function(){
         res.redirect("/login");
     })    
     })
+ }else{
+     console.log("password must be more than 5 chars");
+ }
+   
 })
 
 app.get("/logout",(req,res)=>{

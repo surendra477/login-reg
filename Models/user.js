@@ -1,6 +1,12 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const passportLocalMongoose = require("passport-local-mongoose");
-const UserSchema = new mongoose.Schema({
+// const data = {
+//     type: String,
+//     min: [5],
+//     required: [true, 'Password required']
+//   }
+const UserSchema = new Schema({
     username:String,
     password:String,
     phone:Number,
